@@ -1,0 +1,34 @@
+# Build outputs
+/bin/
+//obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# VS Code
+.vscode/
+
+# Dotnet stuff
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Godot
+.import/
+.export/
+mono_crash.*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+*.swp
