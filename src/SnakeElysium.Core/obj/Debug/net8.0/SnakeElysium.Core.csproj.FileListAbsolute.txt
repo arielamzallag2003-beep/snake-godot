@@ -1,0 +1,11 @@
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\bin\Debug\net8.0\SnakeElysium.Core.deps.json
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\bin\Debug\net8.0\SnakeElysium.Core.dll
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\bin\Debug\net8.0\SnakeElysium.Core.pdb
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.AssemblyInfoInputs.cache
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.AssemblyInfo.cs
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.csproj.CoreCompileInputs.cache
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.dll
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\refint\SnakeElysium.Core.dll
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\SnakeElysium.Core.pdb
+C:\Users\ariel\Documents\ESGI\Godot\SnakeElysium\src\SnakeElysium.Core\obj\Debug\net8.0\ref\SnakeElysium.Core.dll

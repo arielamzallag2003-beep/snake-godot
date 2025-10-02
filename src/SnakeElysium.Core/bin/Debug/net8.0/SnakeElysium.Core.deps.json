@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "SnakeElysium.Core/1.0.0": {
+        "runtime": {
+          "SnakeElysium.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SnakeElysium.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

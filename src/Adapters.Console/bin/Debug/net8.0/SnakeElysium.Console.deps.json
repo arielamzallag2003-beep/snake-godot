@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "SnakeElysium.Console/1.0.0": {
+        "dependencies": {
+          "SnakeElysium.Core": "1.0.0"
+        },
+        "runtime": {
+          "SnakeElysium.Console.dll": {}
+        }
+      },
+      "SnakeElysium.Core/1.0.0": {
+        "runtime": {
+          "SnakeElysium.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SnakeElysium.Console/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SnakeElysium.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
