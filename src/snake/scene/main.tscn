@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3 uid="uid://bs2c6n8p7gkh8"]
+
+[ext_resource type="Script" uid="uid://drkovjgw1hhii" path="res://Main.cs" id="1_brvut"]
+[ext_resource type="Texture2D" uid="uid://ixr53wjc7mty" path="res://assets/snake/bg.png" id="2_0ha60"]
+[ext_resource type="Script" uid="uid://c0v4gxyaxmp55" path="res://scene/SnakeView.cs" id="4_0ha60"]
+[ext_resource type="Script" uid="uid://cmm8ogqpau8eh" path="res://scene/AppleView.cs" id="4_4j5ol"]
+[ext_resource type="Texture2D" uid="uid://b41c5bw6v113f" path="res://assets/snake/apple.png" id="4_p1hux"]
+[ext_resource type="Texture2D" uid="uid://casw27dxhmddr" path="res://assets/snake/head_right.png" id="6_4j5ol"]
+
+[node name="main" type="Node"]
+script = ExtResource("1_brvut")
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(575, 325)
+scale = Vector2(1.148, 0.648)
+texture = ExtResource("2_0ha60")
+
+[node name="apple" type="Sprite2D" parent="."]
+position = Vector2(522, 268)
+texture = ExtResource("4_p1hux")
+script = ExtResource("4_4j5ol")
+
+[node name="snake" type="Node2D" parent="."]
+script = ExtResource("4_0ha60")
+
+[node name="head_right" type="Sprite2D" parent="snake"]
+position = Vector2(312, 321)
+texture = ExtResource("6_4j5ol")
