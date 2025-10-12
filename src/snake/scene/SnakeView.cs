@@ -106,7 +106,7 @@ public partial class SnakeView : Node2D
                     }
                 }
             }
-            else // This handles the tail, as it has no `nextSegment`
+            else
             {
                 var previousSegment = snapshot.Snake[i - 1];
                 

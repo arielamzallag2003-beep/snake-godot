@@ -2,47 +2,29 @@ using Elysium.Foundation.Serpentis.Core.Config;
 using Elysium.Foundation.Serpentis.Core.Domain;
 using Elysium.Foundation.Serpentis.Core.Engine;
 using Godot;
+using System;
 
 public partial class Main : Node
 {
+    #region Core
     private SnakeGame _engine;
     private GameConfig _config;
-    
+    private int _seed = 0;
+    #endregion
+    #region View
     private SnakeView _snakeView;
     private Sprite2D _appleView;
+    private Node2D _entropyWallsView;
+    private Sprite2D _wallSprite;
     private Sprite2D _backgroundSprite;
+    #endregion
+    #region Ui button
+    
+    #endregion
     public override void _Ready()
     {
-
-        _snakeView = GetNode<SnakeView>("snake");
-        _appleView = GetNode<Sprite2D>("apple");
-        _backgroundSprite = GetNode<Sprite2D>("background");
-
-        _config = new GameConfig(
-            width: 30,
-            height: 20,
-            tickSeconds: 0.2,
-            wrapEdges: false,
-            initialLength: 2,
-            fragmentChance: 0,
-            entropyThresholdTicks: 999999999,
-            engravingLifespanRuns: 0,
-            safeSpawnPadding: 0
-        );
-
-       
-        _engine = new SnakeGame();
-
-        _engine.OnGameOver += (evt) => {
-            GD.PrintErr($"🔴 GAME OVER : {evt.Reason}");
-            GD.PrintErr($"   Tick: {evt.TickCount}, Score: {evt.Score}");
-        };
-
-        _engine.Initialize(_config, seed: 12345);
-        _snakeView.Init(_config, _backgroundSprite, _engine);
-
-        
-
+        InitializeNodes();
+        InitializeGame();
     }
     public override void _Process(double delta)
     {
@@ -50,7 +32,91 @@ public partial class Main : Node
         var snapshot = _engine.GetSnapshot();
         _snakeView.UpdateGraphics(snapshot);
         var apple = snapshot.Food;
-        _appleView.Position = GridUtils.CellToWorldTest(apple,_backgroundSprite,_config);
+        _appleView.Position = GridUtils.CellToWorldTest(apple, _backgroundSprite, _config);
+        var walls = snapshot.EntropyWalls;
 
+
+        ClearWalls();
+       
+        foreach ( var wall in walls )
+        {
+            CreateWall(wall);
+        }
+            
+    }
+
+    private void InitializeNodes()
+    {
+        _snakeView = GetNode<SnakeView>("snake");
+        _appleView = GetNode<Sprite2D>("apple");
+        _backgroundSprite = GetNode<Sprite2D>("background");
+        _entropyWallsView = GetNode<Node2D>("walls");
+
+        _wallSprite = GetNode<Sprite2D>("walls/wall");
+        _wallSprite.Visible = false;
+    }
+
+    private GameConfig CreateGameConfig()
+    {
+        return new GameConfig(
+            width: 30,
+            height: 20,
+            tickSeconds: 0.1,
+            wrapEdges: false,
+            initialLength: 2,
+            fragmentChance: 0,
+            entropyThresholdTicks: 30,
+            engravingLifespanRuns: 0,
+            safeSpawnPadding: 0
+        );
+    }
+
+    private void InitializeGame()
+    {
+        _config = CreateGameConfig();
+        _engine = new SnakeGame();
+        _engine.OnGameOver += (evt) =>
+        {
+
+            GD.PrintErr($"🔴 GAME OVER: {evt.Reason}");
+            GD.PrintErr($"   Tick: {evt.TickCount}, Score: {evt.Score}");
+        };
+        _engine.Initialize(_config, seed: 12345);
+        _snakeView.Init(_config, _backgroundSprite, _engine);
+    }
+
+    private void ClearWalls()
+    {
+        foreach (Node child in _entropyWallsView.GetChildren())
+        {
+            if (child != _wallSprite)
+            {
+                child.QueueFree();
+            }
+
+        }
+    }
+
+
+    private void Restart()
+    {
+        foreach (Node child in _entropyWallsView.GetChildren())
+        {
+            if (child != _wallSprite)
+            {
+                child.Free();
+            }
+        }
+
+        _engine.Initialize(_config, seed: 12346);
+    }
+
+    private void CreateWall(Cell pos)
+    {
+
+        var wallSprite = _wallSprite.Duplicate() as Sprite2D;
+        _wallSprite.Visible = true;
+        wallSprite.Position = GridUtils.CellToWorldTest(pos, _backgroundSprite, _config);
+        _entropyWallsView.AddChild(wallSprite);
     }
 }
