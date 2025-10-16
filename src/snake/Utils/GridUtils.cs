@@ -28,8 +28,7 @@ public static class GridUtils
         float offsetX = cellSizeX / 2f;
         float offsetY = cellSizeY / 2f;
 
-        //// Décalage selon la position réelle du Sprite (utile si Centered=true)
-        //var origin = background.GlobalPosition - size / 2f;
+        //// Décalage selon la position réelle du Sprite
 
         return new Vector2(
             cell.X * cellSizeX + offsetX,

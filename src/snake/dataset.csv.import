@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://d0fjui4d2p3pk"
+
+[deps]
+
+files=["res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.1.translation"]
+
+source_file="res://dataset.csv"
+dest_files=["res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.1.translation"]
+
+[params]
+
+compress=true
+delimiter=0
