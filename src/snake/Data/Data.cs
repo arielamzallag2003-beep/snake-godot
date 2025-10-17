@@ -10,14 +10,16 @@ namespace Snake.SaveData
 {
     public class Data
     {
-        private bool _headerWritten = false;
+        private bool _headerFileName = false;
 
+        //a refacto
         public void SaveData(Snapshot snapshot, Direction currentDirection)
         {
 
             var snakeHead = snapshot.Snake[0];
             var apple = snapshot.Food;
             var grid = snapshot.Grid;
+            var score = snapshot.Score;
 
             var distance_between_snake_apple_X = apple.X - snakeHead.X;
             var distance_between_snake_apple_Y = apple.Y - snakeHead.Y;
@@ -36,14 +38,18 @@ namespace Snake.SaveData
                 _ => -1
             };
 
+            int bodyUp = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X && bodyPart.Y == snakeHead.Y - 1) ? 1 : 0;
+            int bodyDown = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X && bodyPart.Y == snakeHead.Y + 1) ? 1 : 0;
+            int bodyLeft = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X - 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
+            int bodyRight = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X + 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
 
-            using (StreamWriter writetext = new StreamWriter("dataset.csv"))
+            using (StreamWriter writetext = new StreamWriter("dataset.csv",append:true))
             {
 
-                if (!_headerWritten)
+                if (!_headerFileName)
                 {
-                    writetext.WriteLine("distanceX,distanceY,closeTopWall,closeBottomWall,closeLeftWall,closeRightWall,action");
-                    _headerWritten = true;
+                    writetext.WriteLine("distanceX,distanceY,closeTopWall,closeBottomWall,closeLeftWall,closeRightWall,bodyUp,bodyDown,bodyLeft,bodyRight,score,action");
+                    _headerFileName = true;
                 }
                 writetext.WriteLine(
                     distance_between_snake_apple_X + "," +
@@ -52,11 +58,17 @@ namespace Snake.SaveData
                     closeBottomWall + "," +
                     closeLeftWall + "," +
                     closeRightWall + "," +
+                    bodyUp + "," +
+                    bodyDown + "," +
+                    bodyLeft + "," +
+                    bodyRight + "," +
+                    score + ","+
                     action
                     );
             }
 
         }
+
 
     }
 }

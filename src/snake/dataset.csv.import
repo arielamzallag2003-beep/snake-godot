@@ -2,14 +2,14 @@
 
 importer="csv_translation"
 type="Translation"
-uid="uid://d0fjui4d2p3pk"
+uid="uid://dsej3rkwyhd5g"
 
 [deps]
 
-files=["res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.1.translation"]
+files=["res://dataset.distanceY.translation", "res://dataset.closeTopWall.translation", "res://dataset.closeBottomWall.translation", "res://dataset.closeLeftWall.translation", "res://dataset.closeRightWall.translation", "res://dataset.action.translation"]
 
 source_file="res://dataset.csv"
-dest_files=["res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.0.translation", "res://dataset.1.translation"]
+dest_files=["res://dataset.distanceY.translation", "res://dataset.closeTopWall.translation", "res://dataset.closeBottomWall.translation", "res://dataset.closeLeftWall.translation", "res://dataset.closeRightWall.translation", "res://dataset.action.translation"]
 
 [params]
 
