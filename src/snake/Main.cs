@@ -24,13 +24,17 @@ namespace Snake
         private Sprite2D _wallSprite;
         private Sprite2D _backgroundSprite;
         private  Data dataset;
+        private CanvasLayer _gameOverCanvas;
+        private Button _restartButton;
         #endregion
         public override void _Ready()
         {
             InitializeNodes();
             InitializeGame();
             SetupDataRecording();
-            
+
+            _restartButton.Pressed += OnRetryButtonPressed;
+
         }
         public override void _Process(double delta)
         {
@@ -38,6 +42,11 @@ namespace Snake
             var snapshot = _engine.GetSnapshot();
             UpdateViews(snapshot);
             UpdateWalls(snapshot);
+
+            if (snapshot.Status == GameStatus.GameOver)
+            {
+                ShowGameOver();
+            }
 
         }
 
@@ -50,6 +59,11 @@ namespace Snake
 
             _wallSprite = GetNode<Sprite2D>("walls/wall");
             _wallSprite.Visible = false;
+
+            _gameOverCanvas = GetNode<CanvasLayer>("GameOver");
+            _gameOverCanvas.Visible = false;
+
+            _restartButton = GetNode<Button>("GameOver/Retry");
         }
 
         private static GameConfig CreateGameConfig()
@@ -71,12 +85,7 @@ namespace Snake
         {
             _config = CreateGameConfig();
             _engine = new SnakeGame();
-            _engine.OnGameOver += (evt) =>
-            {
-
-                GD.PrintErr($"🔴 GAME OVER: {evt.Reason}");
-                GD.PrintErr($"   Tick: {evt.TickCount}, Score: {evt.Score}");
-            };
+         
             _engine.Initialize(_config, seed: 12345);
             _snakeView.Init(_config, _backgroundSprite, _engine);
         }
@@ -105,6 +114,7 @@ namespace Snake
             }
 
             _engine.Initialize(_config, seed: 12346);
+
         }
 
         private void UpdateViews(Snapshot snapshot)
@@ -141,7 +151,17 @@ namespace Snake
                     dataset.SaveData(snapshot, evt.Direction);
             };
         }
+        private void ShowGameOver()
+        {
+            _gameOverCanvas.Visible = true;
+        }
+        private void OnRetryButtonPressed()
+        {
+            Restart();
+            _gameOverCanvas.Visible = false; 
+        }
     }
+
   
 
 

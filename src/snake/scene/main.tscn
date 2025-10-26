@@ -34,3 +34,28 @@ texture = ExtResource("6_4j5ol")
 position = Vector2(1200, -166)
 scale = Vector2(0.91919214, 1)
 texture = ExtResource("7_p1hux")
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Panel" type="Panel" parent="GameOver"]
+offset_left = 240.0
+offset_top = 168.0
+offset_right = 941.0
+offset_bottom = 558.0
+
+[node name="Label" type="Label" parent="GameOver"]
+offset_left = 422.0
+offset_top = 227.0
+offset_right = 769.0
+offset_bottom = 285.0
+theme_override_font_sizes/font_size = 40
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Retry" type="Button" parent="GameOver"]
+offset_left = 523.0
+offset_top = 372.0
+offset_right = 663.0
+offset_bottom = 443.0
+text = "Retry"

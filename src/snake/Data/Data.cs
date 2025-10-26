@@ -10,7 +10,8 @@ namespace Snake.SaveData
 {
     public class Data
     {
-        private bool _headerFileName = false;
+        private bool headerFileName = false;
+        private string fileName = "dataset.txt";
 
         //a refacto
         public void SaveData(Snapshot snapshot, Direction currentDirection)
@@ -43,13 +44,13 @@ namespace Snake.SaveData
             int bodyLeft = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X - 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
             int bodyRight = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X + 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
 
-            using (StreamWriter writetext = new StreamWriter("dataset.csv",append:true))
+            using (StreamWriter writetext = new StreamWriter(fileName,append:true))
             {
 
-                if (!_headerFileName)
+                if (!headerFileName)
                 {
                     writetext.WriteLine("distanceX,distanceY,closeTopWall,closeBottomWall,closeLeftWall,closeRightWall,bodyUp,bodyDown,bodyLeft,bodyRight,score,action");
-                    _headerFileName = true;
+                    headerFileName = true;
                 }
                 writetext.WriteLine(
                     distance_between_snake_apple_X + "," +
