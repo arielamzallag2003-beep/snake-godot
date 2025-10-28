@@ -26,6 +26,7 @@ namespace Snake
         private  Data dataset;
         private CanvasLayer _gameOverCanvas;
         private Button _restartButton;
+        private Label _score;
         #endregion
         public override void _Ready()
         {
@@ -42,11 +43,8 @@ namespace Snake
             var snapshot = _engine.GetSnapshot();
             UpdateViews(snapshot);
             UpdateWalls(snapshot);
-
-            if (snapshot.Status == GameStatus.GameOver)
-            {
-                ShowGameOver();
-            }
+            UpdateScore(snapshot);
+            OnGameOver(snapshot);
 
         }
 
@@ -64,6 +62,7 @@ namespace Snake
             _gameOverCanvas.Visible = false;
 
             _restartButton = GetNode<Button>("GameOver/Retry");
+            _score = GetNode<Label>("Score");
         }
 
         private static GameConfig CreateGameConfig()
@@ -75,7 +74,7 @@ namespace Snake
                 wrapEdges: false,
                 initialLength: 2,
                 fragmentChance: 0,
-                entropyThresholdTicks: 9999999,
+                entropyThresholdTicks: 100,
                 engravingLifespanRuns: 0,
                 safeSpawnPadding: 0
             );
@@ -159,6 +158,18 @@ namespace Snake
         {
             Restart();
             _gameOverCanvas.Visible = false; 
+        }
+
+        private void OnGameOver(Snapshot snapshot)
+        {
+            if (snapshot.Status == GameStatus.GameOver)
+            {
+                ShowGameOver();
+            }
+        }
+        private void UpdateScore(Snapshot snapshot)
+        {
+            _score.Text = $"Score: {snapshot.Score.ToString()}";
         }
     }
 
