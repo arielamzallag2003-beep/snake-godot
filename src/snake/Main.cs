@@ -25,6 +25,7 @@ namespace Snake
         private Sprite2D _backgroundSprite;
         private  Data dataset;
         private CanvasLayer _gameOverCanvas;
+        private Button _menuButton;
         private Button _restartButton;
         private Label _score;
         #endregion
@@ -35,6 +36,7 @@ namespace Snake
             SetupDataRecording();
 
             _restartButton.Pressed += OnRetryButtonPressed;
+            _menuButton.Pressed += OnMenuButtonPressed;
 
         }
         public override void _Process(double delta)
@@ -170,6 +172,11 @@ namespace Snake
         private void UpdateScore(Snapshot snapshot)
         {
             _score.Text = $"Score: {snapshot.Score.ToString()}";
+        }
+
+        private void OnMenuButtonPressed()
+        {
+            GetTree().ChangeSceneToFile("res://menu.tscn");
         }
     }
 
