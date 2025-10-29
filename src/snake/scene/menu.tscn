@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dkrc3xtocs7yd"]
 
 [ext_resource type="Script" uid="uid://dwsk1q86xojat" path="res://scene/Menu.cs" id="1_8hxod"]
-[ext_resource type="Texture2D" uid="uid://doiaus48e255x" path="res://assets/HD-wallpaper-classic-snake-adventures-snake-game.jpg" id="1_e5g8k"]
+[ext_resource type="Texture2D" uid="uid://doiaus48e255x" path="res://assets/bg/HD-wallpaper-classic-snake-adventures-snake-game.jpg" id="1_e5g8k"]
 
 [sub_resource type="Theme" id="Theme_8hxod"]
 

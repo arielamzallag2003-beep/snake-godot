@@ -5,7 +5,6 @@ using Elysium.Foundation.Serpentis.Core.Events;
 using Godot;
 using Snake.SaveData;
 using Snake.Views;
-using System.Data;
 
 
 namespace Snake
@@ -24,10 +23,15 @@ namespace Snake
         private Sprite2D _wallSprite;
         private Sprite2D _backgroundSprite;
         private  Data dataset;
+        #endregion
+        #region UI
         private CanvasLayer _gameOverCanvas;
         private Button _menuButton;
         private Button _restartButton;
         private Label _score;
+        #endregion
+        #region Audio
+        private AudioStreamPlayer _eatSound;
         #endregion
         public override void _Ready()
         {
@@ -36,7 +40,9 @@ namespace Snake
             SetupDataRecording();
 
             _restartButton.Pressed += OnRetryButtonPressed;
+
             _menuButton.Pressed += OnMenuButtonPressed;
+            _engine.OnFoodEaten += PlayEatSound;
 
         }
         public override void _Process(double delta)
@@ -64,7 +70,10 @@ namespace Snake
             _gameOverCanvas.Visible = false;
 
             _restartButton = GetNode<Button>("GameOver/Retry");
+            _menuButton = GetNode<Button>("GameOver/Menu");
             _score = GetNode<Label>("Score");
+
+            _eatSound = GetNode<AudioStreamPlayer>("AppleEatSound");
         }
 
         private static GameConfig CreateGameConfig()
@@ -76,7 +85,7 @@ namespace Snake
                 wrapEdges: false,
                 initialLength: 2,
                 fragmentChance: 0,
-                entropyThresholdTicks: 100,
+                entropyThresholdTicks: 50,
                 engravingLifespanRuns: 0,
                 safeSpawnPadding: 0
             );
@@ -121,7 +130,7 @@ namespace Snake
         private void UpdateViews(Snapshot snapshot)
         {
             _snakeView.UpdateGraphics(snapshot);
-            _appleView.Position = GridUtils.CellToWorldTest(snapshot.Food, _backgroundSprite, _config);
+            _appleView.Position = GridUtils.CellToWorld(snapshot.Food, _backgroundSprite, _config);
         }
 
         private void CreateWall(Cell pos)
@@ -129,7 +138,7 @@ namespace Snake
 
             var wallSprite = _wallSprite.Duplicate() as Sprite2D;
             _wallSprite.Visible = true;
-            wallSprite.Position = GridUtils.CellToWorldTest(pos, _backgroundSprite, _config);
+            wallSprite.Position = GridUtils.CellToWorld(pos, _backgroundSprite, _config);
             _entropyWallsView.AddChild(wallSprite);
         }
 
@@ -155,19 +164,20 @@ namespace Snake
         private void ShowGameOver()
         {
             _gameOverCanvas.Visible = true;
+           
+
         }
         private void OnRetryButtonPressed()
         {
             Restart();
-            _gameOverCanvas.Visible = false; 
+            _gameOverCanvas.Visible = false;
+            
         }
 
         private void OnGameOver(Snapshot snapshot)
         {
-            if (snapshot.Status == GameStatus.GameOver)
-            {
-                ShowGameOver();
-            }
+            if (snapshot.Status == GameStatus.GameOver) ShowGameOver();
+               
         }
         private void UpdateScore(Snapshot snapshot)
         {
@@ -176,7 +186,12 @@ namespace Snake
 
         private void OnMenuButtonPressed()
         {
-            GetTree().ChangeSceneToFile("res://menu.tscn");
+            GetTree().ChangeSceneToFile("res://scene/menu.tscn");
+        }
+
+        private void PlayEatSound(FoodEatenEvent eventData)
+        {
+            _eatSound.Play();
         }
     }
 

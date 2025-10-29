@@ -51,12 +51,11 @@ namespace Snake.Views
             AddChild(_snakeBodyNode);
         }
 
-        //a refacto
         public void UpdateGraphics(Snapshot snapshot)
         {
 
             var snakeHead = snapshot.Snake[0];
-            _snakeHeadSprite.Position = GridUtils.CellToWorldTest(snakeHead, _backgroundSprite, _config);
+            _snakeHeadSprite.Position = GridUtils.CellToWorld(snakeHead, _backgroundSprite, _config);
 
             foreach (Node child in _snakeBodyNode.GetChildren())
             {
@@ -67,7 +66,7 @@ namespace Snake.Views
             {
                 var bodySnake = snapshot.Snake[i];
                 var bodySprite = new Sprite2D();
-                bodySprite.Position = GridUtils.CellToWorldTest(bodySnake, _backgroundSprite, _config);
+                bodySprite.Position = GridUtils.CellToWorld(bodySnake, _backgroundSprite, _config);
 
 
                 if (i < snapshot.Snake.Length - 1)
