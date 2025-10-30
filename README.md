@@ -9,8 +9,11 @@ Ce projet montre comment l’intégrer dans Godot 4.5 à travers un simple adapt
 🎥 APERÇU DU JEU
 -------------------------------------
 
-Exemple de lien :
-[Lien vers la demo.gif]
+
+
+
+https://github.com/user-attachments/assets/2efa982c-49ec-4b38-b7c7-c1a52e72bd95
+
 
 
 -------------------------------------
