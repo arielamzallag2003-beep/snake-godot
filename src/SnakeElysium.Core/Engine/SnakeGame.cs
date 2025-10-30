@@ -290,6 +290,20 @@ public sealed class SnakeGame : ISnakeGame
 
     private bool TrySpawnEntropyWall(out Cell where)
     {
+        var invalidSpawns = new HashSet<Cell>(_occupied);       // Le corps du serpent
+        invalidSpawns.UnionWith(_engravingsLife.Keys);    // Les fantômes
+        invalidSpawns.UnionWith(_entropyWalls);           // Les murs existants
+        invalidSpawns.UnionWith(_safeTiles);              // La zone de départ
+        if (_hasFood) invalidSpawns.Add(_food);           // La pomme
+        if (_snake.Count > 0)
+        {
+            var head = _snake[0];
+            invalidSpawns.Add(new Cell(head.X, head.Y - 1)); // Up
+            invalidSpawns.Add(new Cell(head.X, head.Y + 1)); // Down
+            invalidSpawns.Add(new Cell(head.X - 1, head.Y)); // Left
+            invalidSpawns.Add(new Cell(head.X + 1, head.Y)); // Right
+        }
+
         int reserve = _snake.Count + _engravingsLife.Count + _entropyWalls.Count + _safeTiles.Count + (_hasFood ? 1 : 0);
         int free = _grid.Width * _grid.Height - reserve;
         if (free <= 0) { where = default; return false; }

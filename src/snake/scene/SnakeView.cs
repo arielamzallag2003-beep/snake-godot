@@ -3,9 +3,7 @@ using Elysium.Foundation.Serpentis.Core.Domain;
 using Elysium.Foundation.Serpentis.Core.Engine;
 using Godot;
 using Snake.InputHandler;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Snake.Views
 {
