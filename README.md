@@ -9,12 +9,7 @@ Ce projet montre comment l’intégrer dans Godot 4.5 à travers un simple adapt
 🎥 APERÇU DU JEU
 -------------------------------------
 
-
-
-
 https://github.com/user-attachments/assets/2efa982c-49ec-4b38-b7c7-c1a52e72bd95
-
-
 
 -------------------------------------
 📂 STRUCTURE DU PROJET
@@ -38,8 +33,34 @@ https://github.com/user-attachments/assets/2efa982c-49ec-4b38-b7c7-c1a52e72bd95
 -------------------------------------
 
 * Godot 4.5 (C# / .NET 8)
+* Unity 2021 LTS ou plus récent
 * .NET SDK 8.0
 * Visual Studio 2022 ou JetBrains Rider
+
+-------------------------------------
+## ⚙️ INTÉGRATION ET COMPILATION POUR UNITY
+-------------------------------------
+
+Pour intégrer le SnakeElysium.Core dans Unity, suivez ces étapes critiques :
+
+### 1. Cibler le Bon Framework
+
+Unity utilise .NET Standard 2.1 pour la compatibilité des DLL. Pour éviter les erreurs :
+
+* Modifiez le fichier .csproj du projet SnakeElysium.Core.
+* Assurez-vous que le Framework Cible est uniquement netstandard2.1.
+
+<TargetFrameworks>netstandard2.1</TargetFrameworks>
+
+### 2. Génération de la DLL
+
+* Construisez (Build) le projet SnakeElysium.Core en mode Release.
+* Le fichier généré (SnakeElysium.Core.dll) se trouve généralement dans le répertoire bin/Release/netstandard2.1/.
+
+### 3. Importation dans Unity
+
+* Copiez le fichier SnakeElysium.Core.dll.
+* Collez-le dans le dossier Assets/Plugins de votre projet Unity.
 
 -------------------------------------
 🔗 LIAISON DU CORE À GODOT
