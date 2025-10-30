@@ -1,0 +1,79 @@
+[gd_scene load_steps=8 format=3 uid="uid://bs2c6n8p7gkh8"]
+
+[ext_resource type="Script" uid="uid://drkovjgw1hhii" path="res://Main.cs" id="1_brvut"]
+[ext_resource type="Texture2D" uid="uid://ixr53wjc7mty" path="res://assets/snake/bg.png" id="2_0ha60"]
+[ext_resource type="Script" uid="uid://c0v4gxyaxmp55" path="res://scene/SnakeView.cs" id="4_0ha60"]
+[ext_resource type="Texture2D" uid="uid://b41c5bw6v113f" path="res://assets/snake/apple.png" id="4_p1hux"]
+[ext_resource type="Texture2D" uid="uid://casw27dxhmddr" path="res://assets/snake/head_right.png" id="6_4j5ol"]
+[ext_resource type="Texture2D" uid="uid://c1eit3qnkpmyx" path="res://assets/snake/wall_block_64_4.png" id="7_p1hux"]
+[ext_resource type="AudioStream" uid="uid://ccmieamitohis" path="res://assets/sound/music_food.mp3" id="8_of57s"]
+
+[node name="main" type="Node"]
+script = ExtResource("1_brvut")
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(578.00006, 329.97653)
+scale = Vector2(1.154, 0.652047)
+texture = ExtResource("2_0ha60")
+
+[node name="apple" type="Sprite2D" parent="."]
+position = Vector2(522, 268)
+texture = ExtResource("4_p1hux")
+
+[node name="snake" type="Node2D" parent="."]
+script = ExtResource("4_0ha60")
+
+[node name="head_right" type="Sprite2D" parent="snake"]
+position = Vector2(312, 321)
+texture = ExtResource("6_4j5ol")
+
+[node name="walls" type="Node2D" parent="."]
+
+[node name="wall" type="Sprite2D" parent="walls"]
+position = Vector2(1200, -166)
+scale = Vector2(0.91919214, 1)
+texture = ExtResource("7_p1hux")
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Panel" type="Panel" parent="GameOver"]
+offset_left = 240.0
+offset_top = 168.0
+offset_right = 941.0
+offset_bottom = 558.0
+
+[node name="Label" type="Label" parent="GameOver"]
+offset_left = 422.0
+offset_top = 227.0
+offset_right = 769.0
+offset_bottom = 285.0
+theme_override_font_sizes/font_size = 40
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Retry" type="Button" parent="GameOver"]
+offset_left = 523.0
+offset_top = 372.0
+offset_right = 663.0
+offset_bottom = 443.0
+text = "Retry"
+
+[node name="Menu" type="Button" parent="GameOver"]
+offset_left = 523.0
+offset_top = 442.0
+offset_right = 663.0
+offset_bottom = 513.0
+text = "Menu"
+
+[node name="Score" type="Label" parent="."]
+offset_left = 41.0
+offset_top = 30.0
+offset_right = 153.0
+offset_bottom = 79.0
+theme_override_colors/font_color = Color(0.98789436, 0.00018385946, 0.82682985, 1)
+text = "Score : "
+
+[node name="AppleEatSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_of57s")
+volume_db = -0.323

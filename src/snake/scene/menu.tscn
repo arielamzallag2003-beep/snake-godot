@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://dkrc3xtocs7yd"]
+
+[ext_resource type="Script" uid="uid://dwsk1q86xojat" path="res://scene/Menu.cs" id="1_8hxod"]
+[ext_resource type="Texture2D" uid="uid://doiaus48e255x" path="res://assets/bg/HD-wallpaper-classic-snake-adventures-snake-game.jpg" id="1_e5g8k"]
+
+[sub_resource type="Theme" id="Theme_8hxod"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bo06a"]
+texture = ExtResource("1_e5g8k")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15se8"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs5te"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 10.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_8hxod")
+script = ExtResource("1_8hxod")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_bo06a")
+
+[node name="Menu" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -25.0
+offset_right = 44.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartGame" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_15se8")
+text = "Start Game"
+
+[node name="Exit" type="Button" parent="Panel/Menu"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_xs5te")
+text = "Exit"
