@@ -6,6 +6,7 @@ using Godot;
 using Snake.SaveData;
 using Snake.Views;
 
+using Snake.AI;
 
 namespace Snake
 {
@@ -33,20 +34,49 @@ namespace Snake
         #region Audio
         private AudioStreamPlayer _eatSound;
         #endregion
+
+
+        private SnakeIA _brain;
+        private bool _useAI = true;
+        
+
         public override void _Ready()
         {
             InitializeNodes();
             InitializeGame();
             SetupDataRecording();
 
+            _useAI = GameData.UseAI;
+            _brain = new SnakeIA();
+            AddChild(_brain);
+
             _restartButton.Pressed += OnRetryButtonPressed;
 
             _menuButton.Pressed += OnMenuButtonPressed;
             _engine.OnFoodEaten += PlayEatSound;
 
+            if (!string.IsNullOrEmpty(GameData.DatasetPath))
+            {
+                GD.Print($"Chargement du dataset choisi depuis le menu : {GameData.DatasetPath}");
+                _brain.TrainModel(GameData.DatasetPath);
+            }
+            else
+            {
+                _brain.TrainModel();
+            }
+
         }
         public override void _Process(double delta)
         {
+            if (_engine.GetSnapshot().Status == GameStatus.Running)
+            {
+                if (_useAI)
+                {
+                    var snapshot_ = _engine.GetSnapshot();
+                    Direction aiMove = _brain.PredictMove(snapshot_);
+                    ApplyAIDirection(aiMove);
+                }
+            }
             _engine.Update(delta);
             var snapshot = _engine.GetSnapshot();
             UpdateViews(snapshot);
@@ -85,7 +115,7 @@ namespace Snake
                 wrapEdges: false,
                 initialLength: 2,
                 fragmentChance: 0,
-                entropyThresholdTicks: 50,
+                entropyThresholdTicks: 99999,
                 engravingLifespanRuns: 0,
                 safeSpawnPadding: 0
             );
@@ -156,6 +186,7 @@ namespace Snake
 
             _engine.OnTick += (evt) =>
             {
+                if (_useAI) return;
                 var snapshot = _engine.GetSnapshot();
                 if (snapshot.Status == GameStatus.Running)
                     dataset.SaveData(snapshot, evt.Direction);
@@ -193,10 +224,17 @@ namespace Snake
         {
             _eatSound.Play();
         }
+        private void ApplyAIDirection(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.Up: _engine.HandleInput(InputAction.TurnUp); break;
+                case Direction.Down: _engine.HandleInput(InputAction.TurnDown); break;
+                case Direction.Left: _engine.HandleInput(InputAction.TurnLeft); break;
+                case Direction.Right: _engine.HandleInput(InputAction.TurnRight); break;
+            }
+        }
+        
     }
-
-  
-
-
 }
 

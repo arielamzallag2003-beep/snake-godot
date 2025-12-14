@@ -14,6 +14,7 @@ namespace Snake.Views
         private Sprite2D _snakeHeadSprite;
         private readonly Node2D _snakeBodyNode = new();
         private Sprite2D _backgroundSprite;
+
         private readonly Dictionary<Direction, Texture2D> _snakeHeadTexture = new()
         {
             [Direction.Up] = GD.Load<Texture2D>("res://assets/snake/head_up.png"),
@@ -21,9 +22,9 @@ namespace Snake.Views
             [Direction.Left] = GD.Load<Texture2D>("res://assets/snake/head_left.png"),
             [Direction.Right] = GD.Load<Texture2D>("res://assets/snake/head_right.png"),
         };
+
         private readonly Dictionary<string, Texture2D> _snakeBodyTextures = new()
         {
-
             ["horizontal"] = GD.Load<Texture2D>("res://assets/snake/body_horizontal.png"),
             ["vertical"] = GD.Load<Texture2D>("res://assets/snake/body_vertical.png"),
             ["body_topleft"] = GD.Load<Texture2D>("res://assets/snake/body_topleft.png"),
@@ -31,16 +32,14 @@ namespace Snake.Views
             ["body_bottomleft"] = GD.Load<Texture2D>("res://assets/snake/body_bottomleft.png"),
             ["body_bottomright"] = GD.Load<Texture2D>("res://assets/snake/body_bottomright.png"),
         };
+
         private Direction _currentDirection = Direction.Right;
 
         public void Init(GameConfig config, Sprite2D background, SnakeGame engine)
         {
-
             _config = config;
             _backgroundSprite = background;
             _engine = engine;
-
-
         }
 
         public override void _Ready()
@@ -51,10 +50,29 @@ namespace Snake.Views
 
         public void UpdateGraphics(Snapshot snapshot)
         {
+            if (snapshot.Snake.Length == 0) return;
 
             var snakeHead = snapshot.Snake[0];
             _snakeHeadSprite.Position = GridUtils.CellToWorld(snakeHead, _backgroundSprite, _config);
 
+           
+            if (snapshot.Snake.Length > 1)
+            {
+                var neck = snapshot.Snake[1]; // Le segment juste après la tête
+                Direction headDir = Direction.Right; // Valeur par défaut
+
+                if (snakeHead.Y < neck.Y) headDir = Direction.Up;
+                else if (snakeHead.Y > neck.Y) headDir = Direction.Down;
+                else if (snakeHead.X < neck.X) headDir = Direction.Left;
+                else if (snakeHead.X > neck.X) headDir = Direction.Right;
+
+                if (_snakeHeadTexture.TryGetValue(headDir, out var texture))
+                {
+                    _snakeHeadSprite.Texture = texture;
+                }
+            }
+
+            // Nettoyage et rendu du corps
             foreach (Node child in _snakeBodyNode.GetChildren())
             {
                 child.QueueFree();
@@ -65,7 +83,6 @@ namespace Snake.Views
                 var bodySnake = snapshot.Snake[i];
                 var bodySprite = new Sprite2D();
                 bodySprite.Position = GridUtils.CellToWorld(bodySnake, _backgroundSprite, _config);
-
 
                 if (i < snapshot.Snake.Length - 1)
                 {
@@ -80,71 +97,33 @@ namespace Snake.Views
                     var right_bottom = previousSegment.Y > bodySnake.Y && nextSegment.X > bodySnake.X;
 
                     if (previousSegment.X == nextSegment.X)
-                    {
                         bodySprite.Texture = _snakeBodyTextures["vertical"];
-                    }
                     else if (previousSegment.Y == nextSegment.Y)
-                    {
                         bodySprite.Texture = _snakeBodyTextures["horizontal"];
-                    }
                     else
                     {
-                        if (right_up || up_right)
-                        {
-                            bodySprite.Texture = _snakeBodyTextures["body_topright"];
-                        }
-                        else if (left_up || up_left)
-                        {
-                            bodySprite.Texture = _snakeBodyTextures["body_topleft"];
-                        }
-                        else if (bottom_right || right_bottom)
-                        {
-                            bodySprite.Texture = _snakeBodyTextures["body_bottomright"];
-                        }
-                        else
-                        {
-                            bodySprite.Texture = _snakeBodyTextures["body_bottomleft"];
-                        }
+                        if (right_up || up_right) bodySprite.Texture = _snakeBodyTextures["body_topright"];
+                        else if (left_up || up_left) bodySprite.Texture = _snakeBodyTextures["body_topleft"];
+                        else if (bottom_right || right_bottom) bodySprite.Texture = _snakeBodyTextures["body_bottomright"];
+                        else bodySprite.Texture = _snakeBodyTextures["body_bottomleft"];
                     }
                 }
                 else
                 {
                     var previousSegment = snapshot.Snake[i - 1];
-
-                    if (previousSegment.X < bodySnake.X)
-                    {
-                        bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_right.png");
-                    }
-                    else if (previousSegment.X > bodySnake.X)
-                    {
-                        bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_left.png");
-                    }
-                    else if (previousSegment.Y > bodySnake.Y)
-                    {
-                        bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_up.png");
-                    }
-                    else
-                    {
-                        bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_down.png");
-                    }
-
+                    if (previousSegment.X < bodySnake.X) bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_right.png");
+                    else if (previousSegment.X > bodySnake.X) bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_left.png");
+                    else if (previousSegment.Y > bodySnake.Y) bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_up.png");
+                    else bodySprite.Texture = GD.Load<Texture2D>("res://assets/snake/tail_down.png");
                 }
 
                 _snakeBodyNode.AddChild(bodySprite);
             }
-
         }
 
         public override void _Input(InputEvent @event)
         {
             _currentDirection = SnakeInput.Handle(@event, _engine, _currentDirection);
-
-            if (_snakeHeadTexture.TryGetValue(_currentDirection, out var texture) && texture != null)
-            {
-                _snakeHeadSprite.Texture = texture;
-            }
-
         }
     }
 }
-

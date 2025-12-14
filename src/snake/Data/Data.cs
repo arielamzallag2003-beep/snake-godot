@@ -10,21 +10,15 @@ namespace Snake.SaveData
 {
     public class Data
     {
-        private bool headerFileName = false;
         private string fileName = "dataset.txt";
 
-        //a refacto
         public void SaveData(Snapshot snapshot, Direction currentDirection)
         {
-
             var snakeHead = snapshot.Snake[0];
             var apple = snapshot.Food;
             var grid = snapshot.Grid;
-            var score = snapshot.Score;
 
-            var distance_between_snake_apple_X = apple.X - snakeHead.X;
-            var distance_between_snake_apple_Y = apple.Y - snakeHead.Y;
-
+            // detecte les murs proches
             int closeLeftWall = snakeHead.X <= 1 ? 1 : 0;
             int closeRightWall = snakeHead.X >= grid.Width - 2 ? 1 : 0;
             int closeTopWall = snakeHead.Y <= 1 ? 1 : 0;
@@ -39,37 +33,55 @@ namespace Snake.SaveData
                 _ => -1
             };
 
-            int bodyUp = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X && bodyPart.Y == snakeHead.Y - 1) ? 1 : 0;
-            int bodyDown = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X && bodyPart.Y == snakeHead.Y + 1) ? 1 : 0;
-            int bodyLeft = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X - 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
-            int bodyRight = snapshot.Snake.Any(bodyPart => bodyPart.X == snakeHead.X + 1 && bodyPart.Y == snakeHead.Y) ? 1 : 0;
+            if (action == -1) return;
 
-            using (StreamWriter writetext = new StreamWriter(fileName,append:true))
+            bool isSuicide = false;
+
+            if (action == 0 && closeTopWall == 1) isSuicide = true;      // aller haut + Mur en haut
+            if (action == 1 && closeBottomWall == 1) isSuicide = true;   // Veut aller bas + Mur en bas
+            if (action == 2 && closeLeftWall == 1) isSuicide = true;     // Veut aller gauche + Mur gauche
+            if (action == 3 && closeRightWall == 1) isSuicide = true;    // Veut aller droite + Mur droite
+
+            // Si gameover on arrête tout, on n'écrit rien dans le fichier
+            if (isSuicide)
             {
-
-                if (!headerFileName)
-                {
-                    writetext.WriteLine("distanceX,distanceY,closeTopWall,closeBottomWall,closeLeftWall,closeRightWall,bodyUp,bodyDown,bodyLeft,bodyRight,score,action");
-                    headerFileName = true;
-                }
-                writetext.WriteLine(
-                    distance_between_snake_apple_X + "," +
-                    distance_between_snake_apple_Y + "," +
-                    closeTopWall + "," +
-                    closeBottomWall + "," +
-                    closeLeftWall + "," +
-                    closeRightWall + "," +
-                    bodyUp + "," +
-                    bodyDown + "," +
-                    bodyLeft + "," +
-                    bodyRight + "," +
-                    score + ","+
-                    action
-                    );
+              
+                return;
             }
 
+           
+            var distance_between_snake_apple_X = apple.X - snakeHead.X;
+            var distance_between_snake_apple_Y = apple.Y - snakeHead.Y;
+
+            int bodyUp = snapshot.Snake.Any(b => b.X == snakeHead.X && b.Y == snakeHead.Y - 1) ? 1 : 0;
+            int bodyDown = snapshot.Snake.Any(b => b.X == snakeHead.X && b.Y == snakeHead.Y + 1) ? 1 : 0;
+            int bodyLeft = snapshot.Snake.Any(b => b.X == snakeHead.X - 1 && b.Y == snakeHead.Y) ? 1 : 0;
+            int bodyRight = snapshot.Snake.Any(b => b.X == snakeHead.X + 1 && b.Y == snakeHead.Y) ? 1 : 0;
+
+            bool fileExists = File.Exists(fileName);
+
+            using (StreamWriter writetext = new StreamWriter(fileName, append: true))
+            {
+                if (!fileExists)
+                {
+                    writetext.WriteLine("distanceX,distanceY,closeTopWall,closeBottomWall,closeLeftWall,closeRightWall,bodyUp,bodyDown,bodyLeft,bodyRight,action");
+                }
+
+                writetext.WriteLine(
+                    $"{distance_between_snake_apple_X}," +
+                    $"{distance_between_snake_apple_Y}," +
+                    $"{closeTopWall}," +
+                    $"{closeBottomWall}," +
+                    $"{closeLeftWall}," +
+                    $"{closeRightWall}," +
+                    $"{bodyUp}," +
+                    $"{bodyDown}," +
+                    $"{bodyLeft}," +
+                    $"{bodyRight}," +
+                    $"{action}"
+                );
+            }
         }
-
-
     }
 }
+
